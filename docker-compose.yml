@@ -1,0 +1,41 @@
+version: "1.0"
+services:
+  frontend:
+    build:
+      context: ./app/frontend
+      dockerfile: Dockerfile
+    ports:
+    - "3000:3000"
+    depends_on:
+      - backend
+    container_name: frontend
+    networks:
+      - app-network
+  
+  database:
+    image: mongo
+    ports:
+      - "27017:27017"
+    restart: on-failure
+    container_name: mongodb
+    volumes:
+      - "/usr/Factory_Management_mongodb:/data/db"
+    networks:
+      - app-network
+  
+  backend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    container_name: backend
+    networks:
+      - app-network
+
+#Allows containers to communicate with each other on the same Docker host
+networks:
+  app-network:
+    driver: bridge
