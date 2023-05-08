@@ -3,7 +3,7 @@
    Bussiness Inventory Management
   <img src="https://cdn.icon-icons.com/icons2/1727/PNG/512/3986728-online-shop-store-store-icon_112980.png" width="45"/>
 </h1>
-<b>Manage your inventory and watch Sales statistics</b>
+<b>Manage your inventory statistics</b>
 <div id="header" align="center">
   <img src="https://media0.giphy.com/media/3ohs7UjgdqCnkEYcsE/giphy.gif?cid=ecf05e47ffplcq3idmdjldxwzrrt1wca8wph73v5607pzei0&rid=giphy.gif&ct=g" width="200"/>
 </div>
