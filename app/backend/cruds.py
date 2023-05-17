@@ -8,6 +8,7 @@ app = FastAPI()
 
 origin = [
     "http://localhost:3000",
+    "http://frontend:3000",
 ]
 
 app.add_middleware(
@@ -18,7 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://mongodb:27017/")
 db = client["products_list"]
 collection = db["products"]
 

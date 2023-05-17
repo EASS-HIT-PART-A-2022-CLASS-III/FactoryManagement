@@ -19,7 +19,7 @@ services:
     restart: on-failure
     container_name: mongodb
     volumes:
-      - "/usr/Factory_Management_mongodb:/data/db"
+      - "/usr/mongodb:/products_list/products"
     networks:
       - app-network
   
