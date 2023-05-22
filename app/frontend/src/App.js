@@ -8,14 +8,29 @@ import { TextField, DefaultButton, Stack } from '@fluentui/react';
 function App() {
   const [products, setProducts] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [editingMode, setEditingMode] = useState(false);
+  const [productId, setProductId] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: '',
     stock: '',
     category: ''
-  });
+  })
+  ;
 
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      description: "",
+      price: "",
+      stock: "",
+      category: ""
+    });
+    setEditingMode(false);
+    setProductId(null);
+  };
+  
   useEffect(() => {
     fetch("http://localhost:8000/")
       .then((response) => response.json())
@@ -23,18 +38,18 @@ function App() {
   }, []);
 
   const columns = [
-    { key: 'Name', name: 'Name', fieldName: 'name', minWidth: 40, maxWidth: 80 },
-    { key: 'Description', name: 'Description', fieldName: 'description', minWidth: 80, maxWidth: 100 },
-    { key: 'Price', name: 'Price', fieldName: 'price', minWidth: 25, maxWidth: 50 },
-    { key: 'Stock', name: 'Stock', fieldName: 'stock', minWidth: 25, maxWidth: 50 },
-    { key: 'Category', name: 'Category', fieldName: 'category', minWidth: 20, maxWidth: 80 },
+    { key: 'Name', name: 'Name', fieldName: 'name', minWidth: 70, maxWidth: 120 },
+    { key: 'Description', name: 'Description', fieldName: 'description', minWidth: 70, maxWidth: 120 },
+    { key: 'Price', name: 'Price', fieldName: 'price',  minWidth: 70, maxWidth: 120 },
+    { key: 'Stock', name: 'Stock', fieldName: 'stock',  minWidth: 70, maxWidth: 120 },
+    { key: 'Category', name: 'Category', fieldName: 'category',  minWidth: 70, maxWidth: 120 },
     {
-      key: 'Edit', name: 'Edit', fieldName: 'edit', minWidth: 20, maxWidth: 50,
+      key: 'Edit', name: 'Edit', fieldName: 'edit',  minWidth: 70, maxWidth: 120,
       onRender: (item) => <IconButton iconProps={{ iconName: "Edit" }}
         onClick={() => handleEditItem(item._id)} />
     },
     {
-      key: 'Delete', name: 'Delete', fieldName: 'delete', minWidth: 20, maxWidth: 20,
+      key: 'Delete', name: 'Delete', fieldName: 'delete',  minWidth: 70, maxWidth: 120,
       onRender: (item) => <IconButton iconProps={{ iconName: "Delete" }} onClick={() => handleDeleteItem(item._id)} />
     },
   ];
@@ -46,12 +61,14 @@ function App() {
         // Show the form of a specific item by setting the form data with the retrieved item
         setFormData(data);
         setShowForm(true);
+        setEditingMode(true); // Set editingMode to true
+        setProductId(id); // Set the productId
       })
       .catch((error) => {
         console.error('Product not found:', error);
       });
   };
-
+    
   const handleDeleteItem = (id) => {
     fetch(`http://localhost:8000/products/${id}`, { method: 'DELETE' })
       .then(() => {
@@ -68,6 +85,7 @@ function App() {
 
   const handleCloseForm = () => {
     setShowForm(false);
+    resetForm();
   };
 
   const handleInputChange = (event) => {
@@ -78,10 +96,45 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('Form data:', formData);
-
-    // Make a POST request to create a new product
-    fetch('http://localhost:8000/product', {
-      method: 'POST',
+  
+    if (!editingMode) {
+      // Make a POST request to create a new product
+      fetch('http://localhost:8000/product', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Product created:', data);
+          handleCloseForm();
+  
+          // Fetch the updated list of products
+          fetch('http://localhost:8000/')
+            .then(response => response.json())
+            .then(data => {
+              console.log('Product list updated:', data);
+              setProducts(data);
+            })
+            .catch(error => {
+              console.error('Error fetching product list:', error);
+              // Add your code to handle the error here
+            });
+        })
+        .catch(error => {
+          console.error('Error creating product:', error);
+          // Add your code to handle the error here
+        });
+    } else if (editingMode) {
+      handleSubmitEditItem(productId);
+    }
+  };
+  
+  const handleSubmitEditItem = (productId) => {
+    fetch(`http://localhost:8000/products/${productId}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -89,9 +142,9 @@ function App() {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('Product created:', data);
+        console.log('Product updated:', data);
         handleCloseForm();
-
+  
         // Fetch the updated list of products
         fetch('http://localhost:8000/')
           .then(response => response.json())
@@ -101,17 +154,19 @@ function App() {
           })
           .catch(error => {
             console.error('Error fetching product list:', error);
-            // Add your code to handle the error here
           });
       })
       .catch(error => {
-        console.error('Error creating product:', error);
-        // Add your code to handle the error here
+        console.error('Error updating product:', error);
       });
   };
-
   return (
-    <>
+    
+    <div style={{ textAlign: 'center', margin: '20px' }}>
+      <div style={{ marginTop: '20px',  textAlign:'left'} }>
+        <p>Hey, Warehouse Worker</p>
+      </div>
+      <h1>Inventory Management System</h1>
       <div>
         <PrimaryButton onClick={handleAddItem}>Add Item</PrimaryButton>
         <Dialog
@@ -177,14 +232,16 @@ function App() {
         </Dialog>
       </div>
       <div>
-        <Text>{`Number of items: ${products.length}.`}</Text>
-        <DetailsList
-          items={products}
-          columns={columns}
-          selectionMode={SelectionMode.none}
-        />
+        <Text>{`Number of items: ${products.length}`}</Text>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <DetailsList
+            items={products}
+            columns={columns}
+            selectionMode={SelectionMode.none}
+          />
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 
