@@ -41,8 +41,11 @@ The application would typically have features such as managing inventory levels.
    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original-wordmark.svg" title="React" width="40" height="40"/>&nbsp;
 </div>
  
- <div><div/>
- 
+<div> 
+
+### Demo video is located in 'Demo' folder in this repo.
+
+
  ### Installation Instructions:
  1.
          Make sure you have docker installed on your computer & docker service is running.
@@ -62,3 +65,5 @@ The application would typically have features such as managing inventory levels.
  6.
          Open you browser and Enter:
          http://localhost:3000
+
+</div>

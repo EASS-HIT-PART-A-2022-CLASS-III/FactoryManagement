@@ -38,8 +38,8 @@ function App() {
   }, []);
 
   const columns = [
-    { key: 'Name', name: 'Name', fieldName: 'name', minWidth: 70, maxWidth: 120 },
-    { key: 'Description', name: 'Description', fieldName: 'description', minWidth: 70, maxWidth: 120 },
+    { key: 'Name', name: 'Name', fieldName: 'name', minWidth: 100, maxWidth: 150 },
+    { key: 'Description', name: 'Description', fieldName: 'description', minWidth: 100, maxWidth: 200 },
     { key: 'Price', name: 'Price', fieldName: 'price',  minWidth: 70, maxWidth: 120 },
     { key: 'Stock', name: 'Stock', fieldName: 'stock',  minWidth: 70, maxWidth: 120 },
     { key: 'Category', name: 'Category', fieldName: 'category',  minWidth: 70, maxWidth: 120 },
