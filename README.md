@@ -19,7 +19,7 @@
 <h1 align="center">__________________________________________________________</h1>
    
 ### Introduction:
-Sales and Inventory management application is a web system that helps businesses manage their inventory in a streamlined and efficient manner.<br/>
+This Inventory management application is a web system that helps businesses manage their inventory in a streamlined and efficient manner.<br/>
 The application would typically have features such as managing inventory levels. The goal of the application is to improve inventory management to maximize profitability and minimize waste.
 * Backend using python 3.9 & FastAPI
 * Frontend using React
