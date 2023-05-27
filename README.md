@@ -48,16 +48,16 @@ The application would typically have features such as managing inventory levels.
  1.
          Make sure you have docker installed on your computer & docker service is running.
  2.
-         git clone https://github.com/
+         git clone https://github.com/EASS-HIT-PART-A-2022-CLASS-III/FactoryManagement
  3.
-         cd Inventory_Management
+         cd FactoryManagement
 
  4.
          docker composer up -d
 
 
  5.
-         Check that you have 3 containers running (backend, frontend, mongodb):
+         Check that you have 3 containers running (backend, frontend, mongodb) by writing in your terminal this command:
          docker compose ps
 
  6.
