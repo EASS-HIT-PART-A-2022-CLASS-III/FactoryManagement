@@ -61,7 +61,7 @@ The application would typically have features such as managing inventory levels.
  5.
          Check that you have 3 containers running (backend, frontend, mongodb) by this command:
          docker compose ps
-
+         
  6.
          Open you browser and Enter:
          http://localhost:3000
